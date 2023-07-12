@@ -11,16 +11,25 @@ Data visualization plays a crucial role in post-graduate research and analysis. 
 
 ## Basic Plotting Concepts with ggplot
 
-To get started, we need to install and load the `ggplot2` package. If you haven't installed it yet, you can do so by running the following code:
+To get started, we need to install and load the `ggplot2` package. Then we download a sample dataset (in this case, data on the 10000 most popular movies on TMDb, an online movie database)
 
 ```{r}
 require(ggplot2)
+
+url_tmdb_data<-"https://raw.githubusercontent.com/KenupCF/ZSL_DataClub/main/Day%201/data/movies_tmdb_popular.csv"
+
+tmdb_data<-read.csv(url(url_tmdb_data))
+
+url_tmdb_genres<-"https://raw.githubusercontent.com/KenupCF/ZSL_DataClub/main/Day%201/data/genres.csv"
+
+tmdb_genres<-read.csv(url(url_tmdb_genres))
+
 ```
 
 
 # Simple Scatterplot
 
-For this example we will use the sample dataset `cars`
+
 
 
 ```{r}
@@ -57,9 +66,109 @@ str(mtcars)
 ```
 
 
-#
+# Create a barplot
 
+```{r}
+
+ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_bar(stat = "summary", fun = "mean", fill = "skyblue") +
+  labs(x = "Cylinders", y = "Average MPG") +
+  ggtitle("Average MPG by Cylinder Count")
 
 ```
+
+Notice the bars are annoyingly levitating on the plot. I don't know about, but that really upsets me. Here we can introduce adjustment to axes on ggplot
+
+
+```{r}
+
+ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_bar(stat = "summary", fun = "mean", fill = "skyblue") +
+  labs(x = "Cylinders", y = "Average MPG") +
+  ggtitle("Average MPG by Cylinder Count")+
+  # Adjust y axis not to expand on both limits
+  scale_y_continuous(expand=c(0,0))
+
+```
+
+# Split data by color
+
+```{r}
+
+ggplot(mtcars, aes(color = factor(cyl), x = hp,y=wt)) +
+  geom_point()
+  # geom_bar(stat = "summary", fun = "mean", fill = "skyblue") +
+  # labs(x = "Cylinders", y = "Average MPG") +
+  # ggtitle("Average MPG by Cylinder Count")+
+  # Adjust y axis not to expand on both limits
+  # scale_y_continuous(expand=c(0,0))
+
+```
+
+
+
+# Changing colors
+
+As you probably know (or noticed), the default palette from ggplot is kind of rubbish. We can alter the color legend on the plot with the `scale_fill` or `scale_color` family functions
+
+```{r}
+
+ggplot(mtcars, aes(color = factor(cyl), x = hp,y=wt)) +
+  geom_point()
+  # geom_bar(stat = "summary", fun = "mean", fill = "skyblue") +
+  # labs(x = "Cylinders", y = "Average MPG") +
+  # ggtitle("Average MPG by Cylinder Count")+
+  # Adjust y axis not to expand on both limits
+  # scale_y_continuous(expand=c(0,0))
+
+```
+
+
+
+```{r}
+require(colorspace)
+require(viridis)
+require(wesanderson)
+
+```
+
+
+# Exporting images
+
+
+```{r}
+
+png("Temporary file.png",width = 4,height = 3,units="in",res = 300)
+ggplot(data=cars,mapping = aes(x = speed,y=dist))+
+  geom_point()
+dev.off()
+
+```
+
+```{r}
+
+png("Temporary file2.png",width = 4,height = 3,units="in",res = 1500)
+
+ggplot(data=cars,mapping = aes(x = speed,y=dist))+
+  geom_point()
+
+dev.off()
+
+```
+
+As you can see, the second image is bigger, but with a way smaller text. That is because R draws the fonts with the same text size regardless of resolution, so the bigger the image, the smaller the text size. A solution for that is set up a size elements relative to the resolution. For example
+
+
+```{r}
+
+base<-640
+
+expand<-8/base
+
+png("Temporary file.png",width = 640,height = 480,units="px")
+ggplot(data=cars,mapping = aes(x = speed,y=dist))+
+  geom_point()+
+  theme(axis.text.x = )
+dev.off()
 
 ```
