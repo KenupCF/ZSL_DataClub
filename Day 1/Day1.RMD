@@ -1,0 +1,65 @@
+---
+title: "Day 1"
+author: "Caio Kenup"
+date: "2023-07-11"
+output: html_document
+---
+
+# Introduction
+
+Data visualization plays a crucial role in post-graduate research and analysis. In this primer, we will explore the powerful plotting capabilities of `ggplot` in R. `ggplot` is a widely used package that allows you to create stunning and customizable visualizations. By the end of this primer, you will have a solid foundation in creating compelling plots using `ggplot`.
+
+## Basic Plotting Concepts with ggplot
+
+To get started, we need to install and load the `ggplot2` package. If you haven't installed it yet, you can do so by running the following code:
+
+```{r}
+require(ggplot2)
+```
+
+
+# Simple Scatterplot
+
+For this example we will use the sample dataset `cars`
+
+
+```{r}
+str(cars)
+```
+
+
+
+This is how you would do a scatterplot in base R
+
+```{r}
+plot(x=cars$speed,y=cars$dist,xlab = "Speed",ylab="Dist")
+```
+
+And this is how you have the same scatterplot in ggplot2
+
+```{r}
+ggplot(data=cars,mapping = aes(x = speed,y=dist))+
+  geom_point()
+```
+
+
+`geom_point()` is a function o the _geometry_ family - these are the functions that "draw" stuff on your plot. Some of them are
+
+- `geom_point()`
+- `geom_line()`
+- `geom_bar()`
+- `geom_ribbon()`
+
+Now let's take a more complex dataset, `mtcars`
+
+```{r}
+str(mtcars)
+```
+
+
+#
+
+
+```
+
+```
