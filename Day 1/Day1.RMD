@@ -2,7 +2,9 @@
 title: "Day 1"
 author: "Caio Kenup"
 date: "2023-07-13"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 
